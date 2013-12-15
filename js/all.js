@@ -881,3 +881,295 @@ YUI.add("easyYUI_io", function (Y) {
 
 
 }, '', {requires: ['json-parse', 'io', 'easyYUI_core', 'easyYUI_ui', 'lang']});
+YUI.add("easyYUI_dragDrop", function (Y) {
+
+    var obj = {},
+        attrs = {};
+
+    obj.initializer = function () {
+
+    };
+
+    obj.init = function () {
+        this.previewNode = null;
+        if (this.lastTouchedNode) {
+            this.lastTouchedNode.setData("easyYUI_isTouched", false);
+        }
+
+    };
+
+    obj.deleteEvent = function () {
+        Y.detach(this.mousemoveEvent);
+        Y.detach(this.mouseupEvent);
+        this.dragCanvas.addClass('hidden');
+    };
+
+    obj.dragTo = function (node, touchNodeClass, callback) {
+        var dragCanvasHTML, cloneNode;
+        this.startX = window.event.pageX;
+        this.startY = window.event.pageY;
+
+        this.init();
+        if (!this.dragCanvas) {
+            this.dragCanvas = Y.one(".easyYUI-drag-canvas");
+            if (!this.dragCanvas) {
+                dragCanvasHTML = '<div class="easyYUI-drag-canvas">.</div>';
+                this.dragCanvas  = Y.one("body").appendChild(dragCanvasHTML);
+            }
+        }
+        this.dragCanvas.removeClass('hidden');
+
+        this.originNode = node;
+        this.originNode.setData('easyYUI_isDrag', true);
+
+        cloneNode = node.cloneNode(1);
+        this.copyNode = Y.Node.create("<div></div>");
+        this.copyNode.appendChild(cloneNode);
+        
+        this.originNode.addClass('easyYUI_dragOrigin');
+        this.callback = callback;
+        var width = node.get('offsetWidth');
+        var height = node.get('offsetHeight');
+        this.offsetLeft = width/2 * (-1);
+        this.offsetTop = height/2 * (-1);
+        this.touchParent = Y.one(touchNodeClass).ancestor();
+        this.childNodes = Y.all(touchNodeClass);
+        Y.one("body").append(this.copyNode);
+        this.copyNode.setStyles({
+            "position": "absolute", "zIndex": "999",
+            "width": node.get('offsetWidth'),
+            "height": node.get('offsetHeight'),
+            "padding": 0
+        });
+        this.initBindEvent(touchNodeClass);
+    };
+
+    obj.initBindEvent = function (touchNodeClass) {
+        var moveCallback, endCallback, touchCallback;
+        moveCallback = Y.bind(this.nodeMove, this);
+        endCallback = Y.bind(this.nodeMoveEnd, this);
+        touchCallback = Y.bind(this.nodeTouch, this);
+
+        this.mousemoveEvent = this.dragCanvas.on('mousemove', moveCallback);
+        this.mouseupEvent = this.dragCanvas.on('mouseup', endCallback);
+
+    };
+
+    obj.nodeMove = function (E) {
+        Y.log("mouse move", "debug");
+        var pos = {}, mousex, mousey;
+        E.halt();
+        mousex = E.pageX;
+        mousey = E.pageY;
+        pos.left = E.pageX + this.offsetLeft;
+        pos.top = E.pageY + this.offsetTop;
+        this.copyNode.setStyles(pos);
+        var i, n, region, position = "before";
+        n = this.childNodes.size();
+        for (i = 0; i < n; i++) {
+            region = this.childNodes.item(i).get('region');
+            if ((mousex > region.left && mousex < region.right)
+                && (mousey < region.bottom && mousey > region.top)
+            ) {
+                if (Math.abs(E.pageX - this.startX) > Math.abs(E.pageY - this.startY)) {
+                    if ((mousex - region.left) > (region.right - region.left)/2) {
+                        position = "after";
+                    }
+                } else {
+                    if ((mousey - region.bottom) > (region.top - region.bottom)/2) {
+                        position = "after";
+                    }
+
+                }
+                this.nodeTouch(this.childNodes.item(i), position);
+                break;
+            }
+        }
+    };
+
+    obj.nodeMoveEnd = function (E) {
+        Y.log("mouse up", "debug");
+        var isSuccess = false;
+        E.halt();
+        this.deleteEvent();
+        this.copyNode.remove();
+        this.originNode.removeClass('easyYUI_dragOrigin');
+        if (!this.previewNode) {
+            return ;
+        }
+        if (this.callback) {
+            if (this.callback.drop){ isSuccess = this.callback.drop();}
+        }
+
+        if (isSuccess) {
+            this.originNode.remove();
+            this.previewNode.removeClass('easyYUI_dragOrigin');
+        } else {
+            if (this.previewNode) this.previewNode.remove();
+        }
+    };
+
+    obj.nodeTouch = function (touchedNode, position) {
+        if (touchedNode.getData("easyYUI_isDrag")) return ;
+        if (this.lastTouchedNode) {
+            if (this.lastPosition == position && this.lastTouchedNode.getData("easyYUI_isTouched")) {
+                return ;
+            }
+            this.lastTouchedNode.setData("easyYUI_isTouched", false);
+        }
+        touchedNode.setData("easyYUI_isTouched", true);
+        this.lastTouchedNode = touchedNode;
+        this.lastPosition = position;
+        this.insertNode(touchedNode, position);
+
+    };
+
+    obj.insertNode = function (touchedNode, position) {
+        if (this.previewNode) this.previewNode.remove();
+        var previewNode = this.originNode.cloneNode(1);
+        previewNode.setData("easyYUI_cloneNode", true);
+        previewNode.removeClass("easyYUI_dragOrigin");
+        this.previewNode = previewNode;
+        touchedNode.insert(previewNode, position);
+
+    };
+
+    Y.namespace('easyYUI').dragDrop = Y.Base.create('easyYUI_dragDrop', Y.Base, [],
+        obj,
+        {
+            ATTRS: attrs
+        }
+    );
+
+
+    obj = null;
+    attrs = null;
+    
+    Y.namespace('easyYUI_obj').dragDrop = new Y.easyYUI.dragDrop();
+    Y.log("Load YUI Module [easyYUI dragDrop] success", "info");
+}, '', {requires: ['base', 'transition', 'event-move']});
+/**
+*/
+YUI.add("easyYUI", function (Y) {
+    var obj = {},
+        attrs = {};
+
+
+    if (Y.Translator) {
+        Y.namespace('easyYUI_obj').translator = new Y.Translator();
+    }
+
+    if (Y.easyYUI.dialog) {
+        Y.namespace('easyYUI_obj').dialog = new Y.easyYUI.dialog();
+    }
+
+    obj.initializer = function () {
+        //The node I find, Using node to get this node, nodes to get the array
+        this.node = ""; 
+        this.nodes = ""; 
+    };
+
+    /**
+    translator
+    @param key
+    $param args
+    */
+    obj.translate = function (key, data) {
+        return Y.easyYUI_obj.translator.get_string.call(Y.easyYUI_obj.translator, key, data);
+    }
+    /**
+    popAlert
+    Display a dialog
+    */
+    obj.alert = obj.popDialog = function (messageObj, callbackObj) {
+        var title ="", message = "", conf;
+        if (Y.Lang.isObject(messageObj) && messageObj.title) {
+
+        } else {
+            message = messageObj;
+
+        }
+
+        if (!callbackObj) {
+            callbackObj = {};
+        }
+
+        conf = {
+            type: "dialog",
+            title: title,
+            message: message,
+            callbackObj: callbackObj
+        };
+        return Y.easyYUI_obj.dialog.display.call(Y.easyYUI_obj.dialog, conf);
+    };
+
+    obj.ajax = function (url, param, callback, args) {
+        if (!args) { args = {};}
+        Y.easyYUI_obj.io.request.call(Y.easyYUI_obj.io, "ajax", url, param, callback, args);
+    };
+ 
+    obj.pjax = function (url, param, callback, args) {
+        if (!args) { args = {};}
+        Y.easyYUI_obj.io.request.call(Y.easyYUI_obj.io, "pjax", url, param, callback, args);
+    };
+
+    obj.ajaxPost = function (url, param, callback, args) {
+        if (!args) { args = {};}
+        Y.easyYUI_obj.io.request.call(Y.easyYUI_obj.io, "ajaxpost", url, param, callback, args);
+    };
+
+    obj.loading = function (node, type) {
+        if (!type) { type = "page";}
+        node = Y.one(node);
+        Y.easyYUI_obj.ui.renderLoading.call(Y.easyYUI_obj.ui, type, node);
+    };
+ 
+    obj.scrollY = function (node, config) {
+        Y.easyYUI_obj.ui.scrollY.call(Y.easyYUI_obj.ui, node, config);
+    };
+
+    obj.find = obj.query = function (id) {
+        var nodes = Y.all(id), i, n;
+        this.nodes = null;
+        this.node = null;
+        n = nodes.size();
+        for (i = 0; i < n; i++) {
+            if (i == 0) {
+                this.node = nodes.item(0);
+                this.nodes = [];
+            }
+            this.nodes.push(nodes.item(i));
+        }
+
+
+        return this;
+    };
+
+    obj.dragTo = function (node, touchNodeClass, callback) {
+        Y.easyYUI_obj.dragDrop.dragTo.call(Y.easyYUI_obj.dragDrop, node, touchNodeClass, callback);
+    };
+
+    /******yui default********/
+    obj.one = function () {
+        return Y.one.apply(Y, arguments);
+    }; 
+
+    obj.all = function () {
+        return Y.all.apply(Y, arguments);
+    }; 
+
+    obj.bind = function () {
+        return Y.bind.apply(Y, arguments);
+    }; 
+
+    Y.namespace('easyYUI').main = Y.Base.create('easyYUI_main', Y.Base, [],
+        obj,
+        {
+            ATTRS: attrs
+        }
+    );
+
+    window.y = new Y.easyYUI.main();
+
+    Y.log("Load YUI Module [easyYUI] success.", "info")
+}, '', {requires: ['node', 'event', 'lang', 'easyYUI_dialog', 'easyYUI_core', 'easyYUI_io', 'easyYUI_ui', 'translator', 'lang/translator_zh-TW', 'easyYUI_dragDrop']});

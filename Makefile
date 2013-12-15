@@ -9,4 +9,7 @@ all:
 	cat js/ui.js >> $(name)
 	cat js/dialog.js >> $(name)
 	cat js/io.js >> $(name)
+	cat js/dragDrop.js >> $(name)
+	cat js/easyYUI.js >> $(name)
+
 
