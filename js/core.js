@@ -61,16 +61,6 @@ YUI.add("easyYUI_core", function (Y) {
     };
 
     /**
-     * Remove script code : while , it is secure issue.
-     */
-    obj.getAJAXResponse = function (text) {
-        if (text.substr(0, 6) === "while(") {
-            text = text.replace(/^[^\n\r]+\n/, '');
-        }
-        return text;
-    };
-
-    /**
      * get css zIndex , auto increment
      */
     obj.getZIndex = function () {
