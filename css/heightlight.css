@@ -1,0 +1,68 @@
+pre.prettyprint {
+    width: 95%;
+    margin: 1em auto;
+    padding: 0em 0 0 28px;
+    white-space: pre-wrap;
+    background:#EFFAFF;
+    border:1px solid #ADB0BC;
+    overflow:hidden;
+}
+
+/* Pretty printing styles. Used with prettify.js. */
+/* Vim sunburst theme by David Leibovic */
+
+pre .str, code .str { color: #428922; } /* string  - green */
+pre .kwd, code .kwd { color: #D3521B; } /* keyword - dark pink */
+pre .com, code .com { color: #6F6F6F; font-style: italic; } /* comment - gray */
+pre .typ, code .typ { color: #A7038B; } /* type - light blue */
+pre .lit, code .lit { color: black; } /* literal - blue */
+pre .pun, code .pun { color: black; } /* punctuation - white */
+pre .pln, code .pln { color: black; } /* plaintext - white */
+pre .tag, code .tag { color: #004680; } /* html/xml tag    - light blue */
+pre .atn, code .atn { color: #A7038B; } /* html/xml attribute name  - khaki */
+pre .atv, code .atv { color: #428922; } /* html/xml attribute value - green */
+pre .dec, code .dec { color: #3387CC; } /* decimal - blue */
+pre .pfunc , code .pfunc{
+    color:blue;
+}
+pre .PR_KEYWORD2 , code  .PR_KEYWORD2{
+    color:#a00;
+}
+ 
+
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums { 
+    margin:0 0 0 3px;
+    color: #AEAEAE; 
+    padding:5px 3px;
+    word-wrap:break-word;
+    white-space:pre-wrap;
+    width:95%;
+    border-left:1px solid #ADB0BC;
+} 
+li.L0,li.L2,li.L4,li.L6,li.L8,li.L1,li.L3,li.L5,li.L7,li.L9{
+    padding:0 0 0 10px;
+}
+ 
+/* IE indents via margin-left */
+li.L0,li.L2,li.L4,li.L6,li.L8{ color:black}
+/* Alternate shading for lines */
+li.L1,li.L3,li.L5,li.L7,li.L9 { color:#878C86;}
+ol.linenums li:hover{
+    background:#FCEAEA;
+
+}
+
+@media print {
+  pre .str, code .str { color: #060; }
+  pre .kwd, code .kwd { color: #006; font-weight: bold; }
+  pre .com, code .com { color: #600; font-style: italic; }
+  pre .typ, code .typ { color: #404; font-weight: bold; }
+  pre .lit, code .lit { color: #044; }
+  pre .pun, code .pun { color: #440; }
+  pre .pln, code .pln { color: #000; }
+  pre .tag, code .tag { color: #006; font-weight: bold; }
+  pre .atn, code .atn { color: #404; }
+  pre .atv, code .atv { color: #060; }
+}

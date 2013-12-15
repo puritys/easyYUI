@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html id="Stencil" class="NoJs"  lang="zh-tw">
+<head>
+    <meta charset="utf-8" />
+    <link href="css/heightlight.css" rel="stylesheet" type="text/css"/>
+    <link href="css/easyYUI.css" rel="stylesheet" type="text/css"/>
+    <style>
+    .box {
+        width: 50px;
+        height: 20px;
+        display: inline-block;
+        background-color: #cecece;
+        border:1px solid #000;
+        text-align: center;
+        padding: 15px 0;
+        margin-right: 10px;
+    }
+    </style>
+    <script src="http://yui.yahooapis.com/3.12.0/build/yui/yui-min.js"></script>
+    <script src="js/translator.js"></script>
+    <script src="js/lang_zh-TW.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/dialog.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/io.js"></script>
+    <script src="js/dragDrop.js"></script>
+    <script src="js/easyYUI.js"></script>
+    <script src="js/google_pretty.js"></script>
+
+</head>
+<body  class="yui3-skin-sam"  dir="ltr">
+
+<ul>
+    <li>
+        <a href="#" onclick="popDialog(event);">Pop a Alert Dialog (window.alert)</a>
+        <pre class="prettyprint linenums lang-js" >
+y.popDialog("This is dialog message.");
+        </pre>
+    </li>
+    <li>
+        <a href="#" onclick="popChoiceDialog(event);">Pop a Confirm Dialog (window.confirm)</a>
+        <pre class="prettyprint linenums lang-js" >
+var okCallback = function() {};
+var cancelCallback = function() {}; 
+y.popDialog("This is dialog message.", {ok: okCallback, cancel: cancelCallback);
+        </pre>
+    </li>
+
+    <li>
+        <a href="#" onclick="translate2(event);">Translate (view console)</a>
+        <pre class="prettyprint linenums lang-js" >
+y.translate("GENERIC_MORE");
+        </pre>
+    </li>
+
+    <li>
+        <a href="#" onclick="findNode(event);">Find Node (view console)</a>
+        <pre class="prettyprint linenums lang-js" >
+y.find(".class").node;
+        </pre>
+    </li>
+
+    <li>
+        <a href="#" onclick="findNodeList(event);">Find Node List (view console)</a>
+        <pre class="prettyprint linenums lang-js" >
+y.find(".class").nodes;
+        </pre>
+    </li>
+
+    <li>
+        <a href="#" onclick="ajax1(event);">AJAX (view console)</a>
+        <pre class="prettyprint linenums lang-js" >
+var callback = function (result) {};
+var data = {"userId", 123, "userName": "456"};
+//loading , if you need it.
+y.loading(event.currentTarget, "btn");
+y.ajax("//xxx.xx.xx", data, callback);
+        </pre>
+    </li>
+    <li>
+        <a href="#" onclick="ajaxPost(event);">AJAX Post (view console)</a>
+        <pre class="prettyprint linenums lang-js" >
+var callback = function (result) {};
+var data = {"userId", 123, "userName": "456"};
+y.loading(node, "page");
+y.ajaxPost("//xxx.xx.xx", data, callback);
+        </pre>
+    </li>
+    <li>
+        <a href="#" onclick="ajax2(event);">AJAX get a 404 page</a>
+    </li>
+    <li>
+        <a href="#" onclick="ajax3(event);">AJAX , To use form submit</a>
+        <pre class="prettyprint linenums lang-js" >
+&lt;form>
+    &lt;input type="text" name="name" value="test" />
+&lt;/form>
+var callback = function (result) {};
+y.loading(event.currentTarget, "btn");
+y.ajax("", form, callback);
+        </pre>
+    </li>
+
+    <li>
+        <a href="#" onclick="scrollY(event);" class="scrollY_button">scrollY</a>
+        <pre class="prettyprint linenums lang-js" >
+var target = y.find('.scroll_position_1').node;
+y.scrollY(target, {});
+        </pre>
+    </li>
+
+    <li>
+        <h2>Drag and Drop </h2>
+        <div class="box-wrap">
+            <div class="box">1</div>
+            <div class="box">2</div>
+            <div class="box">3</div>
+            <div class="box">4</div>
+        </div>
+        <br />
+        <a href="sample/js/drag.js" target="_blank">drag.js</a>
+        <pre class="prettyprint linenums lang-js" >
+var target = y.one('.box').item(0);
+y.dragTo(node, '.replaceNode', {drop, drag, touch});
+        </pre>
+    </li>
+
+
+
+
+
+
+</ul>
+<div style="height: 500px;"></div>
+<div class="scroll_position_1">
+    <ul>
+        <li>
+            <div> Scroll Position 1</div>
+            <a href="#" onclick="scrollY2(event);">scrollY Back</a>
+            <pre class="prettyprint linenums lang-js" >
+var target = y.find('.scrollY_button').node;
+y.scrollY(target, {isAnimated: false, paddingTop: 50});
+            </pre>
+        </li>
+
+    </ul>
+ <div style="height: 500px;"></div>
+ 
+</div>
+<div class="node1" style="display: none;">test</div>
+<div class="node1" style="display: none;">test2</div>
+<div class="node1" style="display: none;">test3</div>
+<div class="form1" style="display: none;">
+    <form class="ajax_form1" action="testAjax.php" method="POST">
+        <input type="text" name="name" value="test" />
+        <input type="text" name="disName" value="test" disabled />
+        <input type="radio" name="radio" value="1" />
+        <input type="radio" name="radio" value="2" checked />
+        <input type="radio" name="radio" value="3" />
+
+        <input type="checkbox" name="checkbox" value="1" />
+        <input type="checkbox" name="checkbox" value="2" checked />
+        <input type="checkbox" name="checkbox" value="3" />
+        <input type="checkbox" name="checkbox" value="4" checked />
+
+        <select name="select">
+            <option value="1">test
+            <option value="2" selected>test
+            <option value="3">test
+            <option value="4">test
+
+        </select>
+
+    </form>
+</div>
+
+<script>
+YUI({lang: "zh-TW",    
+     groups: {"myapp":{"base":"\/..\/js_noused\/","modules":{"translator":{"path":"translator\/no_used.js","lang":["zh-TW"]}}}} 
+    }).use("easyYUI", "sampleDrag", function (Y) {
+
+});
+
+function translate2() {
+    console.log(y.translate("GENERIC_MORE"));
+}
+
+function popDialog(E) {
+    E.preventDefault();
+    E.stopPropagation();
+    y.popDialog("This is dialog message.");
+    
+}
+
+function popChoiceDialog(E) {
+    E.preventDefault();
+    E.stopPropagation();
+
+    var okCallback = function() {
+        console.log("You click ok button.");
+        this.hide();
+    };
+    var cancelCallback = function() {
+        console.log("You click cancel button.");
+        this.hide();
+    }; 
+    y.popDialog("This is dialog message.", {ok: okCallback, cancel: cancelCallback});
+
+}
+
+function ajax1(E) {
+    E.preventDefault();
+    E.stopPropagation();
+
+    var node = E.currentTarget;
+    var callback = function (result) {console.log(result);};
+    var form = {"userId": 123, "userName": "456"};
+    y.loading(node, "btn");
+
+    y.ajax("testAjax.php", form, callback);
+
+}
+
+function ajax2(E) {
+    E.preventDefault();
+    E.stopPropagation();
+
+    var node = E.currentTarget;
+    var callback = function (result) {console.log(result);};
+    var form = {"userId": 123, "userName": "456"};
+    y.loading(node, "btn");
+
+    y.ajax("te404xxx", form, callback);
+
+}
+
+function ajax3(E) {
+    E.preventDefault();
+    E.stopPropagation();
+
+    var node = E.currentTarget;
+    var callback = function (result) {console.log(result);};
+    y.loading(node, "btn");
+    form = y.one('.ajax_form1');
+    y.ajax("", form, callback);
+
+}
+
+function ajaxPost(E) {
+    E.preventDefault();
+    E.stopPropagation();
+
+    var node = E.currentTarget;
+    var form = {"userId": 123, "userName": "456"};
+    var callback = y.bind(ajaxResponse, this);
+    y.loading(node, "page");
+    y.ajaxPost("testAjax.php", form, callback);
+
+}
+
+function ajaxResponse (result) {
+    console.log("res = " + result);
+}
+
+function scrollY(event) {
+    event.preventDefault();
+    var target = y.one('.scroll_position_1');
+    y.scrollY(target, {});
+
+}
+
+function scrollY2(event) {
+    event.preventDefault();
+    var target = y.one('.scrollY_button');
+    y.scrollY(target, {isAnimated: false, paddingTop: 50});
+
+}
+
+function findNode(event) {
+    event.preventDefault();
+    var target = y.find('.node1').node;
+    console.log(target);
+
+}
+
+function findNodeList(event) {
+    event.preventDefault();
+    var target = y.find('.node1').nodes;
+    console.log(target);
+
+}
+
+YUI().use("node", function (Y){
+});
+
+</script>
+
+    <script src="sample/js/drag.js"></script>
+</body>
+</html>
