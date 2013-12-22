@@ -17,8 +17,8 @@ YUI.add("easyYUI_dialog", function(Y) {
             visible: false,
             centered: true,
             modal: true,
-            zIndex: 401,
-            alignOn: [{eventName: "resize", node: Y.one("win")}]
+            zIndex: 401
+            //alignOn: [{eventName: "resize", node: Y.one("win")}]
         });
         this.render("body");
         this.get("boundingBox").addClass("msg-dialog-wrap");
