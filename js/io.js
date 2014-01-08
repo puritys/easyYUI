@@ -25,7 +25,7 @@ YUI.add("easyYUI_io", function (Y) {
      **/
     o.request = function (type, url, param, callBack, args) {//{{{
         var splitPm, i ,n, match, paramAy = {}, formNode, inputs;
-        var inputNodem, value, isDisable, name, inputType, selects, selectNode, action;
+        var inputNodem, value, isDisable, name, inputType, selects, selectNode, action, formData;
         if (!type)  {
             type = "ajax";
         }
@@ -49,6 +49,12 @@ YUI.add("easyYUI_io", function (Y) {
                 }
                 type = (method == "get")?'ajax': "ajaxpost";
             }
+
+            var enctype = formNode.getAttribute('enctype');
+            if (enctype == "application/x-www-form-urlencoded") {
+                formData = new FormData();
+            }
+
             inputs = formNode.all('input');
             n = inputs.size();
             for (i = 0; i < n ; i++) {
@@ -68,10 +74,12 @@ YUI.add("easyYUI_io", function (Y) {
                         if (!checked) continue;
                         if (!param[name]) param[name] = [];
                         param[name].push(value);
+                    } else if (inputType == "file") {
+                        value = inputNode.getDOMNode().files[0];
                     } else {
                         param[name] = value;
                     }
-                    
+                    if (formData) formData.append(name, value); 
                 }
             }
 
@@ -83,8 +91,11 @@ YUI.add("easyYUI_io", function (Y) {
                 name = selectNode.get('name');
                 if (!name) continue;
                 param[name] = value;
-
+                if (formData) formData.append(name, value);
             }
+
+            if (formData) param = formData;
+
         } else if (Y.Lang.isString(param)) {
             splitPm = param.split(/&/);
             n = splitPm.length;
@@ -94,7 +105,7 @@ YUI.add("easyYUI_io", function (Y) {
             }
             param = paramAy;
         }
-
+       
         type = type.toLowerCase();
         if (type === "ajax") {
             this.requestAJAX(url, param, callBack, 'GET', args);
