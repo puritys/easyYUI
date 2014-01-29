@@ -16,9 +16,9 @@ YUI.add("easyYUI_dialog", function(Y) {
         this.setAttrs({
             visible: false,
             centered: true,
-            modal: true,
-            zIndex: 401
-            //alignOn: [{eventName: "resize", node: Y.one("win")}]
+ //           modal: true,
+            zIndex: 401,
+        //    buttons: []
         });
         this.render("body");
         this.get("boundingBox").addClass("msg-dialog-wrap");
@@ -43,7 +43,7 @@ YUI.add("easyYUI_dialog", function(Y) {
         }
         this.dialogTitle.setHTML(title);
         this.dialogMessage.setHTML(message);
-
+        Y.easyYUI_obj.ui.renderMask("simple");
         Y.Array.each(footerButtons, function (item, index, array) {
             this.removeButton(item);
         }, this);
@@ -94,6 +94,10 @@ YUI.add("easyYUI_dialog", function(Y) {
         return this;
     };
 
+    obj.hide = function () {
+        Y.easyYUI_obj.ui.removeMask();
+        this.set('visible', false);
+    };
 
     Y.extend(dialog, Y.Panel, obj);
 

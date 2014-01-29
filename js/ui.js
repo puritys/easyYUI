@@ -33,9 +33,22 @@ YUI.add("easyYUI_ui", function (Y) {
     * @method renderMask
     * @param {Node} elm element
     */
-    obj.renderMask = function () {
-        Y.one(document.body).append('<div class="page-mask"></div>');
+    obj.renderMask = function (type) {
+        if (type && type == "simple") {
+            Y.one(document.body).append('<div class="easyYUI_mask simple-mask"></div>');
+        } else {
+            Y.one(document.body).append('<div class="easyYUI_mask page-mask"></div>');
+        }
     };
+
+    obj.removeMask = function (type) {
+        var node;
+        node = Y.one('.easyYUI_mask');
+        if (node) {
+            node.remove();
+        }
+    };
+
 
 
     /**

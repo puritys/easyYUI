@@ -25,7 +25,7 @@ YUI.add("easyYUI_io", function (Y) {
      **/
     o.request = function (type, url, param, callBack, args) {//{{{
         var splitPm, i ,n, match, paramAy = {}, formNode, inputs;
-        var inputNodem, value, isDisable, name, inputType, selects, selectNode, action, formData;
+        var inputNodem, value, isDisable, name, inputType, selects, selectNode, action, formData, textareas, textNode;
         if (!type)  {
             type = "ajax";
         }
@@ -51,8 +51,9 @@ YUI.add("easyYUI_io", function (Y) {
             }
 
             var enctype = formNode.getAttribute('enctype');
-            if (enctype == "application/x-www-form-urlencoded") {
+            if (enctype == "multipart/form-data") {
                 formData = new FormData();
+                type = "ajaxpost";
             }
 
             inputs = formNode.all('input');
@@ -78,7 +79,22 @@ YUI.add("easyYUI_io", function (Y) {
                         value = inputNode.getDOMNode().files[0];
                     } else {
                         param[name] = value;
+
                     }
+                    if (formData) formData.append(name, value); 
+                }
+            }
+
+            textareas = formNode.all('textarea');
+            n = textareas.size();
+            for (i = 0; i < n ; i++) {
+                textNode = textareas.item(i);
+                isDisable = textNode.get('disabled');
+                if (!isDisable) {
+                    value = textNode.get('value');
+                    name = textNode.get('name');
+                    if (!name) continue;
+                    param[name] = value;
                     if (formData) formData.append(name, value); 
                 }
             }
@@ -91,10 +107,9 @@ YUI.add("easyYUI_io", function (Y) {
                 name = selectNode.get('name');
                 if (!name) continue;
                 param[name] = value;
-                if (formData) formData.append(name, value);
+                if (formData) formData.append(name, value); 
             }
 
-            if (formData) param = formData;
 
         } else if (Y.Lang.isString(param)) {
             splitPm = param.split(/&/);
@@ -105,7 +120,7 @@ YUI.add("easyYUI_io", function (Y) {
             }
             param = paramAy;
         }
-       
+ 
         type = type.toLowerCase();
         if (type === "ajax") {
             this.requestAJAX(url, param, callBack, 'GET', args);
@@ -117,7 +132,7 @@ YUI.add("easyYUI_io", function (Y) {
             this.requestAJAX(url, {pjax:1}, callBack, 'PJAX', args);
 
         } else if (type === "ajaxpost") {
-            this.requestAJAX(url, param, callBack, 'POST', args);
+            this.requestAJAX(url, param, callBack, 'POST', args, formData);
         } else if (type === "get") {
             this.requestGet(url, param);
         } else if (type === "post") {
@@ -126,12 +141,18 @@ YUI.add("easyYUI_io", function (Y) {
 
     };//}}}
 
+    o.rawResponse = function (args) {
+        if (this.xhr.readyState == 4) {
+            this.ajaxResponse('', this.xhr, args);
+        }
+    };
+
     /**
      * make a request with parameter by ajax.
      *
      * @method requestAJAX
      **/
-    o.requestAJAX = function (url, param, callBack, method, args) {//{{{
+    o.requestAJAX = function (url, param, callBack, method, args, formData) {//{{{
         var ioCfg, httpMethod;
             random = Math.round(Math.random() * 100000);
 
@@ -161,7 +182,6 @@ YUI.add("easyYUI_io", function (Y) {
             httpMethod = "GET";
         } 
 
-        param.isAJAX = true;
 
         ioCfg = { 
             method: httpMethod,
@@ -177,7 +197,16 @@ YUI.add("easyYUI_io", function (Y) {
                 clickedNode: clickedNode
             }
         };
-        Y.io(url, ioCfg);
+
+        if (formData) {
+            this.xhr = new XMLHttpRequest();
+            var c = Y.bind(this.rawResponse, this, ioCfg.arguments);
+            this.xhr.onreadystatechange = c;
+            this.xhr.open("POST", url);
+            this.xhr.send(formData);
+        } else {
+            Y.io(url, ioCfg);
+        }
     };//}}}
 
     o.ajaxResponse = function (trans_id, res, args) {
@@ -186,6 +215,7 @@ YUI.add("easyYUI_io", function (Y) {
             message,
             status;
 
+        if (res.status)
         status = res.status.toString().substr(0 ,1);
 
         this.ui.preventDoubleClose(args.clickedOverlay, args.clickedNode);

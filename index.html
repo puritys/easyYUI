@@ -16,7 +16,7 @@
         margin-right: 10px;
     }
     </style>
-    <script src="http://yui.yahooapis.com/3.12.0/build/yui/yui-min.js"></script>
+    <script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
     <script src="js/translator.js"></script>
     <script src="js/lang_zh-TW.js"></script>
     <script src="js/core.js"></script>
@@ -29,6 +29,10 @@
 
 </head>
 <body  class="yui3-skin-sam"  dir="ltr">
+<form method="post" enctype="multipart/form-data" id="postFile">
+    <input type="file" name="f" />
+    <a href="#" class="postFile">post file </a>
+</form>
 
 <ul>
     <li>
@@ -181,6 +185,17 @@ y.scrollY(target, {isAnimated: false, paddingTop: 50});
 YUI({lang: "zh-TW",    
      groups: {"myapp":{"base":"\/..\/js_noused\/","modules":{"translator":{"path":"translator\/no_used.js","lang":["zh-TW"]}}}} 
     }).use("easyYUI", "sampleDrag", function (Y) {
+function postFile () {
+    var f = y.one("#postFile");
+    y.ajax("", f, res);
+}
+function res(t) {
+    //console.log(t);
+}
+
+var s = y.one(".postFile");
+s.on('click', postFile);
+
 
 });
 
