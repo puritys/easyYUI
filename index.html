@@ -182,9 +182,8 @@ y.scrollY(target, {isAnimated: false, paddingTop: 50});
 </div>
 
 <script>
-YUI({lang: "zh-TW",    
-     groups: {"myapp":{"base":"\/..\/js_noused\/","modules":{"translator":{"path":"translator\/no_used.js","lang":["zh-TW"]}}}} 
-    }).use("easyYUI", "sampleDrag", function (Y) {
+YUI().use("easyYUI", "sampleDrag", function (Y) {
+
 function postFile () {
     var f = y.one("#postFile");
     y.ajax("", f, res);

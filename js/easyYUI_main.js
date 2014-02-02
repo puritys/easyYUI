@@ -100,12 +100,17 @@ YUI.add("easyYUI", function (Y) {
     };
 
     /******yui default********/
+    obj.all = function () {
+        return Y.all.apply(Y, arguments);
+    }; 
+
     obj.one = function () {
         return Y.one.apply(Y, arguments);
     }; 
 
-    obj.all = function () {
-        return Y.all.apply(Y, arguments);
+    obj.log = function (content, type) {
+        if (!type) type = "debug";
+        return Y.log(content, type);
     }; 
 
     obj.bind = function () {
@@ -123,3 +128,9 @@ YUI.add("easyYUI", function (Y) {
 
     Y.log("Load YUI Module [easyYUI] success.", "info")
 }, '', {requires: ['node', 'event', 'lang', 'easyYUI_dialog', 'easyYUI_core', 'easyYUI_io', 'easyYUI_ui', 'translator', 'lang/translator_zh-TW', 'easyYUI_dragDrop']});
+
+
+YUI({lang: "zh-TW",
+     groups: {"myapp":{"base":"\/..\/js_noused\/","modules":{"translator":{"path":"translator\/no_used.js","lang":["zh-TW"]}}}}
+    }).use('easyYUI');
+
