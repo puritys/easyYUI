@@ -11,18 +11,24 @@ YUI.add("lang/translator_zh-TW", function(Y) {
                  "GENERIC_PREV": "上一步",
                  "GENERIC_CANCEL": "取消",
                  "GENERIC_CONFIRM": "確定",
-                 "GENERIC_ADEQUATE": "充足",
-                 "GENERIC_NOTICE_DIALOG_TITLE": "Notice",
-                 "GENERIC_PRICE": "<span class=\\\"dollar-sign\\\">$</span><span class=\\\"number\\\">{PRICE}</span>",
-                 "GENERIC_PIECE": "件",
                  "GENERIC_TRY_AGAIN": "再試一次",
                  "GENERIC_VALIDATE_FAIL": "資料填寫有誤，請重新輸入",
 
                  // GENERIC Error
                  "GENERIC_ERROR_TITLE": "錯誤訊息",
-                 "GENERIC_ERROR_SYSTEM": "資料擷取失敗，請稍後再試"
+                 "GENERIC_ERROR_SYSTEM": "系統錯誤，請稍後再試"
 
  
              }
          );
-     }, "3.1.0");
+         Y.Intl.add(
+             "translator",
+             "zh-TW",
+             {
+                 "GENERIC_MOREss": "aaa"
+
+ 
+             }
+         );
+
+     }, "3.12.0");

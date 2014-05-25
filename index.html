@@ -16,7 +16,7 @@
         margin-right: 10px;
     }
     </style>
-    <script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+    <script src="http://yui.yahooapis.com/3.17.1/build/yui/yui-min.js"></script>
     <script src="js/translator.js"></script>
     <script src="js/lang_zh-TW.js"></script>
     <script src="js/core.js"></script>
@@ -54,6 +54,7 @@ y.popDialog("This is dialog message.", {ok: okCallback, cancel: cancelCallback);
         <a href="#" onclick="translate2(event);">Translate (view console)</a>
         <pre class="prettyprint linenums lang-js" >
 y.translate("GENERIC_MORE");
+
         </pre>
     </li>
 
@@ -200,6 +201,7 @@ s.on('click', postFile);
 
 function translate2() {
     console.log(y.translate("GENERIC_MORE"));
+    console.log(y.translate("GENERIC_MOREss"));
 }
 
 function popDialog(E) {
