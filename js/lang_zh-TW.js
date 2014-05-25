@@ -21,14 +21,5 @@ YUI.add("lang/translator_zh-TW", function(Y) {
  
              }
          );
-         Y.Intl.add(
-             "translator",
-             "zh-TW",
-             {
-                 "GENERIC_MOREss": "aaa"
-
- 
-             }
-         );
 
      }, "3.12.0");
