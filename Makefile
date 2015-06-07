@@ -89,9 +89,36 @@ yui:
 	cat yui/build/widget-position-align/widget-position-align.js >> $(nameYuiJS)
 	cat yui/build/widget-position-constrain/widget-position-constrain.js >> $(nameYuiJS)
 	cat yui/build/widget-stack/widget-stack.js >> $(nameYuiJS)
+	cat yui/build/widget-position/widget-position.js >> $(nameYuiJS)
 	cat yui/build/panel/panel.js  >> $(nameYuiJS)
 	cat yui/build/datatype-number-parse/datatype-number-parse.js >> $(nameYuiJS)
 	cat yui/build/json-parse/json-parse.js >> $(nameYuiJS)
+	cat yui/build/datatype-number-format/datatype-number-format.js >> $(nameYuiJS)
+	cat yui/build/querystring-stringify-simple/querystring-stringify-simple.js >> $(nameYuiJS)
+	cat yui/build/io-base/io-base.js >> $(nameYuiJS)
+	cat yui/build/datatype-xml-parse/datatype-xml-parse.js >> $(nameYuiJS)
+	cat yui/build/io-xdr/io-xdr.js >> $(nameYuiJS)
+	cat yui/build/io-xdr/io-xdr.js >> $(nameYuiJS)
+	cat yui/build/io-form/io-form.js >> $(nameYuiJS)
+	cat yui/build/io-upload-iframe/io-upload-iframe.js >> $(nameYuiJS)
+	cat yui/build/queue-promote/queue-promote.js >> $(nameYuiJS)
+	cat yui/build/io-queue/io-queue.js >> $(nameYuiJS)
+	cat yui/build/overlay/overlay.js >> $(nameYuiJS)
+	cat yui/build/transition/transition.js >> $(nameYuiJS)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

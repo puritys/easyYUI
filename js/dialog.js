@@ -16,10 +16,9 @@ YUI.add("easyYUI_dialog", function(Y) {
         this.setAttrs({
             visible: false,
             centered: true,
- //           modal: true,
-            zIndex: 401,
-        //    buttons: []
+            zIndex: 9900,
         });
+        if (!document.body) return "";
         this.render("body");
         this.get("boundingBox").addClass("msg-dialog-wrap");
         this.get("contentBox").addClass("msg-dialog");
@@ -29,10 +28,9 @@ YUI.add("easyYUI_dialog", function(Y) {
         this.dialogMessage = Y.Node.create("<div/>").addClass("message");
         this.setStdModContent(Y.WidgetStdMod.HEADER, this.dialogTitle);
         this.setStdModContent(Y.WidgetStdMod.BODY, this.dialogMessage);
-
     };
 
-    obj.display = function (dialogCfg) {
+    obj.display = function (dialogCfg) {//{{{
         var btnConfig, callback;
         var title = dialogCfg.title || "",
             message = dialogCfg.message || "",
@@ -92,7 +90,7 @@ YUI.add("easyYUI_dialog", function(Y) {
         }
         this.show();
         return this;
-    };
+    };//}}}
 
     obj.hide = function () {
         Y.easyYUI_obj.ui.removeMask();
@@ -100,8 +98,6 @@ YUI.add("easyYUI_dialog", function(Y) {
     };
 
     Y.extend(dialog, Y.Panel, obj);
-
     Y.namespace("easyYUI").dialog = dialog;
-    Y.log("Load YUI Module [easyYUI_dialog] success");
 
 }, "", {requires: ["array-extras", "panel", "easyYUI_core"]});
