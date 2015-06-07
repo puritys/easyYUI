@@ -1,4 +1,4 @@
-YUI.add("translator", function(Y) {
+YUI.add("easyYUI_translator", function(Y) {
 
     function Translator() {
         this._module = "translator";
@@ -18,4 +18,4 @@ YUI.add("translator", function(Y) {
 
     Y.Translator = Translator;
 
-}, "0.0.0", {lang: ["zh-TW"], requires: ["intl", "lang"]}); 
+}, "0.0.0", {requires: ["intl", "lang"]}); 
